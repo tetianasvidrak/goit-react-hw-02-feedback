@@ -41,37 +41,21 @@ class App extends React.Component {
   countPositiveFeedbackPercentage = () =>
     Math.round((this.state.good / this.countTotalFeedback()) * 100);
 
-  onLeaveFeedback = option => {
-    switch (option) {
-      case 'Bad':
-        this.onBadButtonClick();
-        this.countTotalFeedback();
-        this.countPositiveFeedbackPercentage();
-        break;
-      case 'Good':
-        this.onGoodButtonClick();
-        this.countTotalFeedback();
-        this.countPositiveFeedbackPercentage();
-        break;
-      case 'Neutral':
-        this.onNeutralButtonClick();
-        this.countTotalFeedback();
-        this.countPositiveFeedbackPercentage();
-        break;
-      default:
-        break;
-    }
-  };
-
   render() {
+    const total = this.countTotalFeedback();
+    const positive = this.countPositiveFeedbackPercentage() ?? 0;
     return (
       <>
         <Section
           title="Please leave feedback"
           children={
             <FeedbackOptions
-              options={['Good', 'Neutral', 'Bad']}
-              onLeaveFeedback={this.onLeaveFeedback}
+              options={['good', 'neutral', 'bad']}
+              onLeaveFeedback={{
+                bad: this.onBadButtonClick,
+                neutral: this.onNeutralButtonClick,
+                good: this.onGoodButtonClick,
+              }}
             />
           }
         />
@@ -83,8 +67,8 @@ class App extends React.Component {
                 good={this.state.good}
                 neutral={this.state.neutral}
                 bad={this.state.bad}
-                total={this.countTotalFeedback()}
-                positivePercentage={this.countPositiveFeedbackPercentage() || 0}
+                total={total}
+                positivePercentage={positive}
               />
             ) : (
               <Notification message="There is no given feedback" />
