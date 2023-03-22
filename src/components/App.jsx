@@ -11,26 +11,10 @@ class App extends React.Component {
     bad: 0,
   };
 
-  onGoodButtonClick = () => {
+  onButtonClick = button => {
     this.setState(prevState => {
       return {
-        good: prevState.good + 1,
-      };
-    });
-  };
-
-  onNeutralButtonClick = () => {
-    this.setState(prevState => {
-      return {
-        neutral: prevState.neutral + 1,
-      };
-    });
-  };
-
-  onBadButtonClick = () => {
-    this.setState(prevState => {
-      return {
-        bad: prevState.bad + 1,
+        [button]: prevState[button] + 1,
       };
     });
   };
@@ -51,11 +35,7 @@ class App extends React.Component {
           children={
             <FeedbackOptions
               options={['good', 'neutral', 'bad']}
-              onLeaveFeedback={{
-                bad: this.onBadButtonClick,
-                neutral: this.onNeutralButtonClick,
-                good: this.onGoodButtonClick,
-              }}
+              onLeaveFeedback={this.onButtonClick}
             />
           }
         />
